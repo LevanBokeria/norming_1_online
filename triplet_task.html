@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Triplet task</title>
+    <script src='jatos.js'></script>
+    <script src='./jspsych-6.3.1/jspsych.js'></script>
+    <script src='./extra_functions/lodash.js'></script>
+    <script src='./extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
+    <script src="./extra_functions/jspsych-triplets-keyboard-response.js"></script>
+    <script src="./jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    <script src="./jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <link href='./jspsych-6.3.1/css/jspsych.css' rel='stylesheet' type='text/css'>
+    </link>
+    <link href='./extra_files/custom.css' rel='stylesheet' type='text/css'>
+    </link>
+</head>
+
+<body></body>
+
+<script>
+    jatos.onLoad(function () {
+        // debugger
+        var session_trials = []
+        var trial_stage_name = []
+
+        // Is this practice, pre or post
+        if (jatos.studySessionData.inputData.session_counters.practice == 0) {
+
+            jatos.studySessionData.inputData.session_counters.practice++
+
+            session_trials = jatos.studySessionData.inputData.triplet_practice_trials[jatos.studySessionData.inputData.session_counters.practice - 1]
+            trial_stage_name = 'practice'
+
+
+        } else if (jatos.studySessionData.inputData.session_counters.exposure == 0) {
+
+            jatos.studySessionData.inputData.session_counters.pre_exposure++
+
+            session_trials = jatos.studySessionData.inputData.pre_exposure_trials[jatos.studySessionData.inputData.session_counters.pre_exposure - 1]
+            trial_stage_name = 'pre_exposure'
+
+        } else {
+
+            jatos.studySessionData.inputData.session_counters.post_exposure++
+
+            session_trials = jatos.studySessionData.inputData.post_exposure_trials[jatos.studySessionData.inputData.session_counters.post_exposure - 1]
+            trial_stage_name = 'post_exposure'
+
+        }
+
+        var trial = {
+            type: 'triplets-keyboard-response',
+            query_stimulus: jsPsych.timelineVariable('query_stimulus'),
+            ref_left_stimulus: jsPsych.timelineVariable('ref_left_stimulus'),
+            ref_right_stimulus: jsPsych.timelineVariable('ref_right_stimulus'),
+            ref_left_y_offset: jsPsych.timelineVariable('ref_left_y_offset'),
+            ref_right_y_offset: jsPsych.timelineVariable('ref_right_y_offset'),
+            stimulus_height: 400,
+            choices: ['q', 'p'],
+            trial_duration: jatos.studySessionData.inputData.experiment_parameters.triplet_trial_dur,
+            post_response_delay: jatos.studySessionData.inputData.experiment_parameters.triplet_trial_iti,
+            stim_min_duration: jatos.studySessionData.inputData.experiment_parameters.triplet_stim_min_duration,
+            data: { trial_stage: trial_stage_name },
+            on_finish: function (data) {
+
+                // Counterbalancing condition?
+                data.cb_condition = jatos.studySessionData.inputData.cb_condition
+
+                // What session is this
+                data.session = jatos.studySessionData.inputData.session_counters[trial_stage_name]
+
+                if (jsPsych.timelineVariable('correct_response') == null) {
+                    data.correct = null
+                    data.correct_response = null
+                } else if (jsPsych.pluginAPI.compareKeys(data.response, jsPsych.timelineVariable('correct_response'))) {
+                    data.correct = true;
+                    data.correct_response = jsPsych.timelineVariable('correct_response')
+                } else {
+                    data.correct = false
+                    data.correct_response = jsPsych.timelineVariable('correct_response')
+                }
+            }
+        }
+
+        var session_procedure = {
+            timeline: [trial],
+            timeline_variables: session_trials,
+            randomize_order: false,
+            post_trial_gap: 0,
+        }
+        
+
+        // Preload trial
+        var all_query_images     = session_trials.map(item => item.query_stimulus)
+        var all_ref_left_images  = session_trials.map(item => item.ref_left_stimulus)
+        var all_ref_right_images = session_trials.map(item => item.ref_right_stimulus)
+        var all_images_preload   = [...all_query_images,...all_ref_left_images,...all_ref_right_images]
+
+        var preload_trial = {
+            type: 'preload',
+            images: all_images_preload
+        }
+
+        jsPsych.init({
+
+            timeline: [preload_trial, session_procedure],
+
+            on_finish: function (data) {
+                // debugger
+                // Get the data and save it!
+
+                if (jatos.studySessionData.inputData.session_counters.pre_exposure == 0) {
+
+                    jatos.studySessionData.outputData.practice.push(...data.values().filter(item => item.trial_stage == trial_stage_name))
+
+                } else if (jatos.studySessionData.inputData.session_counters.exposure == 0) {
+                    jatos.studySessionData.outputData.pre_exposure.push(...data.values().filter(item => item.trial_stage == trial_stage_name))
+
+                } else {
+                    jatos.studySessionData.outputData.post_exposure.push(...data.values().filter(item => item.trial_stage == trial_stage_name))
+                }
+
+                // Make JATOS remember that this session was run
+                jatos.studySessionData.latestFinishedComponentId = jatos.componentId;
+                jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+                jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
+
+                jatos.submitResultData("[triplet_task_start---" +
+                    JSON.stringify(jatos.studySessionData) + "---triplet_task_end]",
+                    function () {
+                        jatos.startComponentByPos(
+                            jatos.studySessionData.inputData.component_positions.break
+                        )
+                    })
+            }
+        });
+
+
+    }); // jatos on load
+
+</script>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Playground</title>
+        <script src='./jspsych-6.3.1/jspsych.js'></script>        
+        <script src='./extra_functions/lodash.js'></script>
+        <script src = './extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
+        <script src="./extra_functions/jspsych-triplets-keyboard-response.js"></script>
+        <script src="./jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+        <link href='./jspsych-6.3.1/css/jspsych.css' rel='stylesheet' type='text/css'></link>
+        <link href='./extra_files/custom.css' rel='stylesheet' type='text/css'></link>
+    </head>
+    
+    <body></body>
+    
+    <script>
+
+        var trial = {
+            type: 'triplets-keyboard-response',
+            query_stimulus: 'img/neck_legs_space/dim_1_stim_16_x_50_y_110.png',
+            ref1_stimulus: 'img/neck_legs_space/dim_1_stim_16_x_50_y_110.png',
+            ref_right_stimulus: 'img/neck_legs_space/dim_1_stim_16_x_50_y_110.png',
+            ref_left_y_offset: -100,
+            ref_right_y_offset: 100,
+            stimulus_height: 400,
+            choices: ['1','2'],
+        }
+            
+        var timeline = []
+
+        timeline.push(trial)
+
+        jsPsych.init({
+            
+            timeline: timeline,  
+            
+            on_finish: function(data) {
+                console.log('Over');
+                jsPsych.data.displayData('json');
+            }       
+        });
+
+            // ///////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    </script>
+</html>

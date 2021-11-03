@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exposure Same Different</title>
+        <script src='jatos.js'></script>
+        <script src='./jspsych-6.3.1/jspsych.js'></script>        
+        <script src='./extra_functions/lodash.js'></script>
+        <script src = './extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
+        <script src="./jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src="./extra_functions/jspsych-exposure-keyboard-response.js"></script>
+        <script src="./jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="./jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+        <link href='./jspsych-6.3.1/css/jspsych.css' rel='stylesheet' type='text/css'></link>
+        <link href='./extra_files/custom.css' rel='stylesheet' type='text/css'></link>
+    </head>
+    <body></body>
+    <script>
+
+        jatos.onLoad(function() {
+            // debugger
+            jatos.studySessionData.inputData.session_counters.exposure ++ 
+
+            // Get trials
+            var session_trials = jatos.studySessionData.inputData.exposure_trials[jatos.studySessionData.inputData.session_counters.exposure-1]
+
+            var fixation_trial = {
+                type: 'exposure-keyboard-response',
+                // prompt: 'Is the bird the Same as the one before? Press 1 for same, 2 for different.',
+                choices: jsPsych.NO_KEYS,
+                stimulus: function(){
+
+                    // Get the jsPsych data
+                    let data = jsPsych.data.get().values()
+                    
+                    // If they missed, choose the missed fixation. Else normal
+                    let img = ''
+                    if (data[data.length-1].rt === undefined){
+                        // So its the first trial, show normal
+                        img = 'img/fixation.png'
+                    } else if(data.length == 3){
+                        // So its still the first trial, after the bird was shown. show normal
+                        img = 'img/fixation.png'
+                    } else if(data[data.length-1].rt == null){
+                        img = 'img/fixation_missed.png'
+                    } else {
+                        img = 'img/fixation.png'
+                    }
+
+                    return img
+                },
+                stimulus_height: 500,
+                x_offset: 0,
+                y_offset: 50,
+                trial_duration: jatos.studySessionData.inputData.experiment_parameters.fixation_trial_dur,
+                response_ends_trial: false,
+                data: { trial_stage: 'fixation' }                
+            }
+
+            var exposure_trial = {
+                type: 'exposure-keyboard-response',
+                // prompt: 'Is the bird the same as the one before? Press 1 for same, 2 for different.',
+                choices: ['q','p'],
+                stimulus: jsPsych.timelineVariable('stimulus'),
+                x_offset: jsPsych.timelineVariable('x_offset'),
+                y_offset: jsPsych.timelineVariable('y_offset'),
+                trial_duration: jatos.studySessionData.inputData.experiment_parameters.exposure_trial_dur,
+                response_ends_trial: true,
+                stim_min_duration: jatos.studySessionData.inputData.experiment_parameters.exposure_stim_min_duration,
+                data: { trial_stage: 'exemplar_display' },
+                on_finish: function(data){
+                    
+                    // Counterbalancing condition
+                    data.cb_condition = jatos.studySessionData.inputData.cb_condition
+
+                    data.correct_response = jsPsych.timelineVariable('correct_response')
+
+                    data.session = jatos.studySessionData.inputData.session_counters.exposure
+
+                    // debugger
+                    let n_trials = jsPsych.data.get().filter({trial_stage: 'exemplar_display'}).count()
+
+                    if (n_trials > 1){
+                        if (data.response == data.correct_response){
+                            data.correct = true
+                        } else {
+                            data.correct = false
+                        }
+                    } else {
+                        data.correct = null
+                    }
+
+                }                
+            }
+
+            var session_procedure = {
+                timeline: [fixation_trial,exposure_trial],
+                timeline_variables: session_trials,
+                randomize_order: false,
+                post_trial_gap: 0,
+            }
+            
+            // Create the preload trial
+            var preload_trial = {
+                type: 'preload',
+                images: [jatos.studySessionData.inputData.all_exemplars,'img/fixation.png','img/fixation_missed.png'],
+            }
+
+            jsPsych.init({
+                timeline: [preload_trial,session_procedure],  
+                // show_progress_bar: true,                 
+              
+                on_finish: function(data){
+                    // debugger
+                    jatos.studySessionData.outputData.exposure.push(...data.values().filter(item => item.trial_stage == 'exemplar_display'))
+
+                    // Make JATOS remember that this session was run
+                    jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
+                    jatos.studySessionData.latestFinishedComponentPos   = jatos.componentPos;
+                    jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
+
+                    jatos.submitResultData("[exposure_start---" + 
+                    JSON.stringify(jatos.studySessionData) + "---exposure_end]",
+                    function(){jatos.startComponentByPos(
+                        jatos.studySessionData.inputData.component_positions.break
+                        )})
+                }
+
+                // on_finish: function(data) {
+                //     console.log('Over');
+                //     jsPsych.data.displayData('json');
+                // }       
+            });
+   
+            // ///////////////////////////////////////////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////////////////////////////////////////////
+        });
+    
+    </script>
+</html>

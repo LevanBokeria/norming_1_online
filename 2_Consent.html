@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
+	<title>Consent</title>
+	<script src="jspsych-6.3.1/jspsych.js"></script>
+	<script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+	<script src="jatos.js"></script>
+	<link rel="stylesheet" href="jspsych-6.3.1/css/jspsych.css" type="text/css">
+	</link>
+	<link rel="stylesheet" href="./extra_files/custom.css" type="text/css">
+	</link>
+
+	<!-- Specific style for the header -->
+	<style>
+		.header {
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background-color: #8f8d8d;
+			color: white;
+			text-align: center;
+			cursor: default;
+		}
+	</style>
+</head>
+
+<body>
+	<script>
+
+		//make a timeline
+		var timeline = [];
+
+		var welcome_page = ['<div class= "header">' +
+			'<h1> Welcome.</h1>' +
+			'<p> Please read through the following pages of information.</p>' +
+			'</div>' +
+			'<div class="instruct"> <br>' +
+			'<p><br><br><br>You should complete this study in one sitting. ' +
+			'It will last about 40 minutes. You will be paid a minimum of £4, plus a bonus (see below).</p>' +
+			'<p>The study is broken up into several sections:</p>' +
+			'<li> Consent, instructions and practice session: takes ~5 minutes. </li>' +
+			'<li> Similarity task #1. Takes ~5 minutes.</li>' +
+			'<li> Same/Different judgment task. Takes ~20 minutes.</li>' +
+			'<li> Similarity task #2. Takes ~5 minutes.</li>' +
+			'<li> Debriefing survey: ~5 minutes.</li>' +
+			'<p><br>You will see instructions at the beginning of each of these tasks.</p>' +
+			'<p> Total payment for completing the full experiment: £4 </p>' +
+			'<p style="font-size:22px;"><br><b><u>Please note that you will get an additional bonus payment of up to £3 depending on the quality of your responses!</b></u><br><br>' +
+			'<p>However, if the quality of your responses are consistently low, such as if you miss too many trials, you will not be compensated for your participation.</p>' +
+			'<p>The next page will walk you through our consent form.</p>' +
+			'<br><hr></div>' +
+			'<p><br><em><span style="color: black;"> To navigate these pages, use the mouse to click the "Next" button below.</span></em></p>']
+
+		var info1 = ["<div class= 'header'>" +
+			"<h2> Information</h2>" +
+			"</div>" +
+			"<div class='instruct'>  " +
+			"<p><br><br><br><br><u>Ethics Code:</u><br>You are being invited to take part in a research study.  Before you decide it is important for you to understand why the research is being done and what it will involve.  Please take time to read the following information carefully and discuss it with others if you wish.  You may contact us via a Prolific message to the researcher if there is anything that is not clear or if you would like more information.  Take time to decide whether or not you wish to take part.<br><br>" +
+			"<p> <u> What is the purpose of this study? </u> <br>" +
+			" To elucidate basic mechanisms of attention, including contributions to:" +
+			'<li> Sensory analysis in vision, hearing and other modalities</li>' +
+			'<li> Sensory analysis in vision, hearing and other modalities</li>' +
+			'<li> Sensory analysis in vision, hearing and other modalities</li>' +
+			"<p><br><u> Why have I been chosen? </u>" +
+			'<p>You have been chosen because you are registered with Prolific Academic and you meet the eligibility criteria.</p>' +
+			"<p><br><u> Who is organizing this study? </u>" +
+			'<p>The study is organized by a researcher working at the Medical Research Council Cognition and Brain Sciences Unit (MRC CBSU), Cambridge. Your Principle Researcher is:</p>' +
+			'<p>Prof John Duncan (john.duncan@mrc-cbu.cam.ac.uk)</p>' +
+			'<p>Other Researchers involved in the project co-ordination and contributing to testing: </p>' +
+			'<li> Dr Robert Mok (rob.mok@mrc-cbu.cam.ac.uk)</li>' +
+			'<li>Dr. Yaara Erez (Yaara.Erez@mrc-cbu.cam.ac.uk)</li>' +
+			'<li>Dr. Sharon Erzinclioglu (Sharon.Erzinclioglu@mrc-cbu.cam.ac.uk)</li>' +
+			'<li>Dr. Daniel Mitchell (Daniel.Mitchell@mrc-cbu.cam.ac.uk)</li>' +
+			'<li>Mr. Jascha Achterberg (Jascha.Achterberg@mrc-cbu.cam.ac.uk)</li>' +
+			'<li>Dr. Moataz Assem (Moataz.Assem@mrc-cbu.cam.ac.uk)</li>' +
+			'<li>Dr. Reza Rajimehr (Reza.Rajimehr@mrc-cbu.cam.ac.uk)</li>' +
+			'<li>Mr. Alexander Anwyl-Irvine (Alexander.Irvine@mrc-cbu.cam.ac.uk)</li>' +			
+			"<p><br><u> What does the procedure involve? </u>" +
+			'<p>You will perform tasks testing your cognitive abilities. You will have the opportunity to view the stimuli and practice before starting the task, and you may contact us (via Prolific or email) with any questions beforehand. You will have the opportunity to take short breaks if you wish, but keep in mind that you must finish the whole session within the stated time, starting from the time that you give consent to participate.</p><br>' +
+			"<p><u> What are the possible risks/side effects of taking part? </u>" +
+			'<p>There are no known risks or side effects. </p><br>' +
+			"<p><u> What are the possible benefits of taking part? </u>" +
+			'<p>We will reimburse you for your time, and you will have the pleasure of knowing that you have made a contribution to our understanding of the mind. There will be no other direct benefits from being involved in the study.</p><br>' +
+			"<p><u> What happens at the end of the study? </u>" +
+			'<p>When data from volunteers are collected, it will be analyzed and written up for publication in a scientific journal, and the anonymous data may be shared online. The results may also be presented at scientific meetings, or in talks at academic institutions. Results will always be presented in such a way that data from individual volunteers cannot be identified.</p>' +			
+			"<p><br><u> Confidentiality – who will have access to the data?</u>" +
+			'<p>Only certain members of the CBSU and members of the research group will have access to the data. It is possible that the data may be used by researchers working with the CBSU for other similar ethically approved research protocols, where the same standards of confidentiality will apply. It may also be disclosed to researchers working outside the EEC, when that person is working in close collaboration with the CBSU researchers on this project. In that case, that person has signed a Code of Conduct guaranteeing that the data will be kept confidential & secure. The MRC complies with the requirements of the Data Protection Act 1998 with regard to the collection, storage, processing and disclosure of personal information and is committed to upholding the Acts core Data Protection Principles. All enquiries concerning access to data held by the CBSU should be addressed to the Freedom of Information Liaison Officer at the Unit in the first instance. After the study is complete, the data (e.g. behavioural responses, reaction times) collected may be shared online, with the chief aim of sharing the results with the scientific community. No personally identifiable information will be shared.</p>' +			
+			"<p><br><u> What other information will you collect?</u>" +
+			'<p>In addition to the information you provide through your responses during the study, we collect information about the device, operating system and web browser that you’re using. This information is essential for ensuring that the study runs properly for you, and allows us to investigate problems that might be due to device or software incompatibility. We may report summary statistics from this data, which may then be made public, but such reports will not include any information that would identify individuals who participated in the study.</p><br>' +
+			"<p> <u> What about browser cookies?</u>  " +
+			'<p>Cookies are information packets sent by the web server to the browser, and stored by the browser. This information is sent back to the server each time the browser makes a request. This enables the server to keep track of multiple requests that come from the same individual. The use of session cookies, which are cleared when you close your browser tab/window, is necessary in order for the experiment to run properly. </p><br>' +
+			"<p> <u> What will happen to the study results?</u>  " +
+			'<p>They will be kept securely for a minimum of 10 years and possibly indefinitely in the CBSU data archive in accordance with good research practice. </p><br>' +
+			"<p> <u> Can I withdraw from the study?</u>  " +
+			'<p>You may withdraw from the study at any time, without explaining why. If you chose to withdraw from the study then all of your data will be deleted. You can withdraw by closing the browser tab/window during the session, or by contacting the researcher after you complete the session. </p><br>' +
+			"<p> <u> Who has approved this study?</u>  " +
+			'<p>This research study has been approved by the Cambridge Research Ethics Committee.</p>' +
+			'<p><br>Thank you for considering taking part in this study. If you require any further information, we will be pleased to help you in any way we can. </p>' +
+			'<p>Please click the “next” button to see the consent form, where you will have the option to consent to participate in this study. You will be able to return to this page after clicking “next”.</p>' +			
+			" <br><hr>" +
+			"</div>"]
+
+		var consent_page = ["<div class= 'header'>" +
+			"<h1> Informed consent for the study: </h1>" +
+			"</div>" +
+			"<br><br><br>" +
+			" <li> I confirm that I have read and understood the volunteer information on the previous page. (Click the “previous” button to review this information). </li>" +
+			" <li> I understand that I can ask questions by contacting the researcher via Prolific messages. </li>" +
+			" <li> I understand that my participation is voluntary. I am free to withdraw at any time, without giving a reason, without penalty or affecting my legal rights. </li>" +
+			" <li> I understand that the research data may be accessed by researchers working at or in collaboration with the MRC Cognition and Brain Sciences Unit in similar ethically approved studies but that at all times my personal data will be kept confidential in accordance with data protection guidelines.</li>" +
+			" <li> I understand that on publication, research data may be shared with others through a protected database after removing information that might identify me.</li>" +
+			'<p>Do you wish to take part in this study?</p>' +
+			" <br><hr>" +
+			"<p><em><span style='color: black';><b>Click 'Next' to consent and continue with the study.</b> <br>On the next page, we will test your browser and then provide instructions for the task. <br>If you no longer wish to take part, close your internet tab/browser window.</span></em></p>"]
+
+		//make a welcome message
+		var welcome = {
+			type: 'instructions',
+			pages: [welcome_page, info1, consent_page],
+			show_clickable_nav: true,
+			button_label_next: '<span style="color: black";> <strong> Next </stong></span>',
+			allow_backward: true,
+			show_page_number: true,
+		};
+
+		timeline.push(welcome);
+
+		//start timeline
+		jatos.onLoad(function () {
+
+			jsPsych.init({
+				timeline: timeline,
+				on_finish: function (data) {
+
+					// Save the consent infomration
+					jatos.studySessionData.outputData.consent_results = jsPsych.data.get().values()
+
+
+					// Make JATOS remember that this session was run
+					jatos.studySessionData.latestFinishedComponentId = jatos.componentId;
+					jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
+					jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
+
+					jatos.studySessionData.outputData.consent_results = jsPsych.data.get().values();;
+
+					jatos.submitResultData("[consent_start---" +
+						JSON.stringify(jatos.studySessionData) +
+						"---consent_end]", jatos.startNextComponent);
+				}
+			});
+
+		});
+
+	</script>
+</body>
+
+</html>
