@@ -1,382 +1,170 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Determine condition</title>
-        <script src='jatos.js'></script>
-        <script src='./jspsych-6.3.1/jspsych.js'></script>        
-        <script src='./extra_functions/lodash.js'></script>
-        <script src='./extra_functions/trial_creator_triplets.js'></script>
-        <script src='./extra_functions/trial_creator_exposure.js'></script>
-        <script src='./extra_files/test_stimuli.js'></script>
-        <!-- <script src='./extra_functions/math.js'></script> -->
-        <script src = './extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
-        <link href='./jspsych-6.3.1/css/jspsych.css' rel='stylesheet' type='text/css'></link>
-        <link href='./extra_files/custom.css' rel='stylesheet' type='text/css'></link>
-    </head>
-    <body></body>
-    <script>
 
-    jatos.onLoad(function() {
-        
+<head>
+    <title>Determine condition</title>
+    <script src='jatos.js'></script>
+    <script src='./jspsych-6.3.1/jspsych.js'></script>
+    <script src='./extra_functions/lodash.js'></script>
+    <script src='./extra_functions/trial_creator_triplets.js'></script>
+    <script src='./extra_functions/trial_creator_exposure.js'></script>
+    <script src='./extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
+    <script src='./extra_functions/combinations.js'></script>
+    <link href='./jspsych-6.3.1/css/jspsych.css' rel='stylesheet' type='text/css'>
+    </link>
+    <link href='./extra_files/custom.css' rel='stylesheet' type='text/css'>
+    </link>
+</head>
+
+<body></body>
+
+<!-- <script type="module">
+    debugger
+    import * as $C from './extra_functions/combinatorics.js';
+    window.Combinatorics = $C;
+</script> -->
+
+<script>
+
+    jatos.onLoad(function () {
+        // debugger
+
+        // let c = new Combinatorics.Combination('abcdefgh', 4);
+
         // Define all the conditions here ///////////////////////////////////////////////////////////
         var timeline = []
 
         jatos.studySessionData.inputData.curr_session = 0
-        
+
         // Component positions
         jatos.studySessionData.inputData.component_positions = {
             consent: 2,
             browser_check: 3,
             instructions: 5,
             triplet_task: 6,
-            exposure: 7,
-            break: 8,            
-            debriefing: 9,
-            data_submission: 10,
-        }             
-        
+            break: 7,
+            debriefing: 8,
+            data_submission: 9,
+        }
+
         // All images
         jatos.studySessionData.inputData.all_exemplars = [
-            'img/jpg/neck_legs_space/dim_1_stim_100_x_100_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_101_x_101_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_102_x_102_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_103_x_103_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_104_x_104_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_105_x_105_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_106_x_106_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_107_x_107_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_108_x_108_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_109_x_109_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_10_x_10_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_110_x_110_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_111_x_111_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_112_x_112_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_113_x_113_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_114_x_114_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_115_x_115_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_116_x_116_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_117_x_117_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_118_x_118_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_119_x_119_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_11_x_11_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_120_x_120_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_121_x_121_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_122_x_122_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_123_x_123_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_124_x_124_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_125_x_125_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_126_x_126_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_127_x_127_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_128_x_128_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_129_x_129_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_12_x_12_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_130_x_130_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_131_x_131_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_132_x_132_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_133_x_133_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_134_x_134_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_135_x_135_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_136_x_136_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_137_x_137_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_138_x_138_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_139_x_139_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_13_x_13_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_140_x_140_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_141_x_141_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_142_x_142_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_143_x_143_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_144_x_144_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_145_x_145_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_146_x_146_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_147_x_147_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_148_x_148_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_149_x_149_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_14_x_14_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_150_x_150_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_151_x_151_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_152_x_152_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_153_x_153_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_154_x_154_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_155_x_155_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_156_x_156_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_157_x_157_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_158_x_158_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_159_x_159_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_15_x_15_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_160_x_160_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_161_x_161_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_162_x_162_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_163_x_163_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_164_x_164_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_165_x_165_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_166_x_166_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_167_x_167_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_168_x_168_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_169_x_169_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_16_x_16_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_170_x_170_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_171_x_171_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_172_x_172_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_173_x_173_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_174_x_174_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_175_x_175_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_176_x_176_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_177_x_177_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_178_x_178_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_179_x_179_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_17_x_17_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_180_x_180_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_181_x_181_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_182_x_182_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_183_x_183_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_184_x_184_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_185_x_185_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_186_x_186_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_187_x_187_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_188_x_188_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_189_x_189_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_18_x_18_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_190_x_190_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_191_x_191_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_192_x_192_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_193_x_193_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_194_x_194_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_195_x_195_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_196_x_196_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_197_x_197_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_198_x_198_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_199_x_199_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_19_x_19_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_1_x_1_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_200_x_200_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_201_x_201_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_202_x_202_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_203_x_203_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_204_x_204_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_205_x_205_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_206_x_206_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_207_x_207_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_208_x_208_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_209_x_209_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_20_x_20_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_210_x_210_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_211_x_211_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_212_x_212_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_213_x_213_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_214_x_214_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_215_x_215_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_216_x_216_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_217_x_217_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_218_x_218_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_219_x_219_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_21_x_21_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_220_x_220_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_221_x_221_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_222_x_222_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_223_x_223_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_224_x_224_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_225_x_225_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_226_x_226_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_227_x_227_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_228_x_228_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_229_x_229_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_22_x_22_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_230_x_230_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_231_x_231_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_232_x_232_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_233_x_233_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_234_x_234_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_235_x_235_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_236_x_236_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_237_x_237_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_238_x_238_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_239_x_239_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_23_x_23_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_240_x_240_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_241_x_241_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_242_x_242_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_243_x_243_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_244_x_244_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_245_x_245_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_246_x_246_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_247_x_247_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_248_x_248_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_249_x_249_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_24_x_24_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_250_x_250_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_251_x_251_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_252_x_252_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_253_x_253_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_254_x_254_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_255_x_255_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_256_x_256_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_257_x_257_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_258_x_258_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_259_x_259_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_25_x_25_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_260_x_260_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_261_x_261_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_262_x_262_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_263_x_263_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_264_x_264_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_265_x_265_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_266_x_266_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_267_x_267_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_268_x_268_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_269_x_269_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_26_x_26_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_270_x_270_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_271_x_271_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_272_x_272_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_273_x_273_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_274_x_274_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_275_x_275_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_276_x_276_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_277_x_277_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_278_x_278_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_279_x_279_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_27_x_27_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_280_x_280_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_281_x_281_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_282_x_282_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_283_x_283_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_284_x_284_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_285_x_285_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_286_x_286_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_287_x_287_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_288_x_288_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_289_x_289_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_28_x_28_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_290_x_290_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_291_x_291_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_292_x_292_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_293_x_293_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_294_x_294_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_295_x_295_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_296_x_296_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_297_x_297_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_298_x_298_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_299_x_299_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_29_x_29_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_2_x_2_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_300_x_300_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_30_x_30_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_31_x_31_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_32_x_32_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_33_x_33_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_34_x_34_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_35_x_35_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_36_x_36_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_37_x_37_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_38_x_38_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_39_x_39_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_3_x_3_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_40_x_40_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_41_x_41_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_42_x_42_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_43_x_43_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_44_x_44_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_45_x_45_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_46_x_46_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_47_x_47_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_48_x_48_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_49_x_49_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_4_x_4_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_50_x_50_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_51_x_51_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_52_x_52_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_53_x_53_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_54_x_54_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_55_x_55_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_56_x_56_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_57_x_57_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_58_x_58_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_59_x_59_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_5_x_5_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_60_x_60_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_61_x_61_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_62_x_62_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_63_x_63_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_64_x_64_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_65_x_65_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_66_x_66_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_67_x_67_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_68_x_68_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_69_x_69_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_6_x_6_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_70_x_70_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_71_x_71_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_72_x_72_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_73_x_73_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_74_x_74_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_75_x_75_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_76_x_76_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_77_x_77_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_78_x_78_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_79_x_79_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_7_x_7_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_80_x_80_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_81_x_81_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_82_x_82_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_83_x_83_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_84_x_84_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_85_x_85_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_86_x_86_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_87_x_87_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_88_x_88_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_89_x_89_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_8_x_8_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_90_x_90_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_91_x_91_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_92_x_92_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_93_x_93_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_94_x_94_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_95_x_95_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_96_x_96_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_97_x_97_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_98_x_98_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_99_x_99_y_110.jpg',
-            'img/jpg/neck_legs_space/dim_1_stim_9_x_9_y_110.jpg',
+            './img/object-9_50-levels_1D/object9F0Level0F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level10F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level11F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level12F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level13F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level14F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level15F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level16F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level17F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level18F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level19F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level1F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level20F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level21F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level22F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level23F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level24F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level25F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level26F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level27F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level28F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level29F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level2F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level30F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level31F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level32F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level33F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level34F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level35F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level36F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level37F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level38F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level39F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level3F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level40F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level41F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level42F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level43F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level44F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level45F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level46F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level47F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level48F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level49F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level4F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level5F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level6F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level7F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level8F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level9F1Level14.png']
 
-        ]  
+        // How many exemplars are we using
+        var n_exemplars = 10
 
-        // Exosure ones
-        jatos.studySessionData.inputData.exposure_exemplars = [30,50,70,90,110,130,150,
-        170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300]
-        
-        // What counterbalancing to use
-        if (jatos.componentJsonInput.cb_condition == 'dense_right'){
+        // From which level do we start taking n_exemplars?
+        var exemplar_start_level = 14
 
-            jatos.studySessionData.inputData.cb_condition = 'dense_right'
-        } else if (jatos.componentJsonInput.cb_condition == 'dense_left'){
-            // debugger
-            jatos.studySessionData.inputData.cb_condition = 'dense_left'
 
-            // Flip the triplets
-            test_stimuli.forEach(item => {
-                item.query = 165 - item.query + 165
-                item.ref1 = 165 - item.ref1 + 165
-                item.ref2 = 165 - item.ref2 + 165
+        // Generate holders for all the referents
+        var all_refs = []
+        var all_queries = []
 
-                item.dist_query_ref1 = item.query - item.ref1
-                item.dist_query_ref2 = item.query - item.ref2
-                item.dist_ref1_ref2 = item.ref1 - item.ref2
 
-                item.abs_dist_query_ref1 = Math.abs(item.query - item.ref1)
-                item.abs_dist_query_ref2 = Math.abs(item.query - item.ref2)
-                item.abs_dist_ref1_ref2  = Math.abs(item.ref1 - item.ref2)             
-            })
+        for (iT = 0; iT < n_exemplars; iT++) {
 
-            // Flip the exposure exemplars
-            jatos.studySessionData.inputData.exposure_exemplars = jatos.studySessionData.inputData.exposure_exemplars.map(item => 165 - item + 165)
+            // For each exemplar, generate all combinations of 2 from all the rest of exemplars
+            let all_idxs = Array(n_exemplars).fill().map((element, index) => index)
+
+            // Take all except iT
+            all_idxs.splice(all_idxs.indexOf(iT), 1)
+
+            // Create all possible permutations of n choose 2
+            let refs = k_combinations(all_idxs, 2)
+
+            // Create the array of the query items with the same length
+            let queries = Array(refs.length).fill(iT)
+
+            // Add these to the main variables
+            all_refs.push(...refs)
+            all_queries.push(...queries)
 
         }
 
-        // Define which triplets are for practice and which for real
-        jatos.studySessionData.inputData.triplet_practice_params = test_stimuli.filter(item => item['Comment'] == 'practice')
-        jatos.studySessionData.inputData.pre_exposure_params     = test_stimuli.filter(item => item['Comment'] == 'main')        
-        jatos.studySessionData.inputData.post_exposure_params    = test_stimuli.filter(item => item['Comment'] == 'main')   
+        // Now, randomly, flip the referent orders
+        let n_trials = all_refs.length
+        let idx_sequences = Array(n_trials).fill().map((el, idx) => idx)
 
+        let idx_to_flip = jsPsych.randomization.sampleWithoutReplacement(idx_sequences, n_trials / 2)
+
+        for (iFlip = 0; iFlip < idx_to_flip.length; iFlip++) {
+
+            let curr_idx = idx_to_flip[iFlip]
+
+            all_refs[curr_idx] = all_refs[curr_idx].reverse()
+
+        }
+
+        // debugger
+        // // Randomly shuffle both the query array and the ref array
+        // let rand_idx = jsPsych.randomization.shuffle(idx_sequences)
+
+        // all_queries = rand_idx.map(i => all_queries[i]);
+        // all_refs    = rand_idx.map(i => all_refs[i]);
+
+        // Now finally, create the actual trials 
+        let n_sessions = 6
+        jatos.studySessionData.inputData.all_sessions = trial_creator_triplets(
+            all_queries,
+            all_refs,
+            jatos.studySessionData.inputData.all_exemplars,
+            n_sessions,
+            exemplar_start_level
+        )
+
+
+        debugger
         // How many exposure sessions
         jatos.studySessionData.inputData.experiment_parameters = {
             n_exposure_sessions: 7,
@@ -394,34 +182,24 @@
 
         jatos.studySessionData.inputData.session_counters = {
             practice: 0,
-            pre_exposure: 0,
-            exposure: 0,
-            post_exposure: 0,
+            triplet_task: 0,
         }
-        // debugger
 
         // Practice trials 
-        jatos.studySessionData.inputData.triplet_practice_trials = trial_creator_triplets(jatos.studySessionData.inputData.triplet_practice_params,jatos.studySessionData.inputData.experiment_parameters.n_reps_per_triplet,
-        jatos.studySessionData.inputData.experiment_parameters.n_practice_sessions)
+        jatos.studySessionData.inputData.triplet_practice_trials = trial_creator_triplets(jatos.studySessionData.inputData.triplet_practice_params, jatos.studySessionData.inputData.experiment_parameters.n_reps_per_triplet,
+            jatos.studySessionData.inputData.experiment_parameters.n_practice_sessions)
 
         // Create the pre-exposure trials
-        jatos.studySessionData.inputData.pre_exposure_trials = trial_creator_triplets(jatos.studySessionData.inputData.pre_exposure_params,jatos.studySessionData.inputData.experiment_parameters.n_reps_per_triplet,
-        jatos.studySessionData.inputData.experiment_parameters.n_pre_exp_triplet_sessions)
+        jatos.studySessionData.inputData.pre_exposure_trials = trial_creator_triplets(jatos.studySessionData.inputData.pre_exposure_params, jatos.studySessionData.inputData.experiment_parameters.n_reps_per_triplet,
+            jatos.studySessionData.inputData.experiment_parameters.n_pre_exp_triplet_sessions)
 
-        // Create the exposure trials
-        jatos.studySessionData.inputData.exposure_trials = trial_creator_exposure(jatos.studySessionData.inputData.experiment_parameters.n_exposure_sessions)
-
-        // Create the post-exposure trials
-        jatos.studySessionData.inputData.post_exposure_trials = trial_creator_triplets(jatos.studySessionData.inputData.post_exposure_params,jatos.studySessionData.inputData.experiment_parameters.n_reps_per_triplet,
-        jatos.studySessionData.inputData.experiment_parameters.n_post_exp_triplet_sessions)        
-
-        if (jatos.componentJsonInput.debugMode){
+        if (jatos.componentJsonInput.debugMode) {
             // debugger
             jatos.studySessionData.inputData.experiment_parameters = {
                 n_exposure_sessions: 2,
                 n_practice_sessions: 1,
                 n_pre_exp_triplet_sessions: 1,
-                n_post_exp_triplet_sessions: 1,                
+                n_post_exp_triplet_sessions: 1,
                 exposure_trial_dur: 2000,
                 triplet_trial_dur: 10,
                 fixation_trial_dur: 10,
@@ -435,47 +213,47 @@
             let n_debug_trials = 5
 
             let temp_exposure = []
-            jatos.studySessionData.inputData.exposure_trials.forEach(function(el){
-                temp_exposure.push(el.slice(0,n_debug_trials))
+            jatos.studySessionData.inputData.exposure_trials.forEach(function (el) {
+                temp_exposure.push(el.slice(0, n_debug_trials))
             })
             jatos.studySessionData.inputData.exposure_trials = temp_exposure
 
             // Shorten the triplet trials
             let temp_practice = []
-            jatos.studySessionData.inputData.triplet_practice_trials.forEach(function(el){
-                temp_practice.push(el.slice(0,n_debug_trials))
+            jatos.studySessionData.inputData.triplet_practice_trials.forEach(function (el) {
+                temp_practice.push(el.slice(0, n_debug_trials))
             })
             jatos.studySessionData.inputData.triplet_practice_trials = temp_practice
 
 
             let temp_pre_exp = []
-            jatos.studySessionData.inputData.pre_exposure_trials.forEach(function(el){
-                temp_pre_exp.push(el.slice(0,n_debug_trials))
+            jatos.studySessionData.inputData.pre_exposure_trials.forEach(function (el) {
+                temp_pre_exp.push(el.slice(0, n_debug_trials))
             })
             jatos.studySessionData.inputData.pre_exposure_trials = temp_pre_exp
 
             let temp_post_exp = []
-            jatos.studySessionData.inputData.post_exposure_trials.forEach(function(el){
-                temp_post_exp.push(el.slice(0,n_debug_trials))
+            jatos.studySessionData.inputData.post_exposure_trials.forEach(function (el) {
+                temp_post_exp.push(el.slice(0, n_debug_trials))
             })
             jatos.studySessionData.inputData.post_exposure_trials = temp_post_exp
         }
 
 
         // Make JATOS remember that this session was run
-        jatos.studySessionData.latestFinishedComponentId    = jatos.componentId;
-        jatos.studySessionData.latestFinishedComponentPos   = jatos.componentPos;
+        jatos.studySessionData.latestFinishedComponentId = jatos.componentId;
+        jatos.studySessionData.latestFinishedComponentPos = jatos.componentPos;
         jatos.studySessionData.latestFinishedComponentTitle = jatos.componentProperties.title;
 
-        jatos.submitResultData('done',function(){jatos.startComponentByPos(jatos.studySessionData.inputData.component_positions.instructions)})
+        jatos.submitResultData('done', function () { jatos.startComponentByPos(jatos.studySessionData.inputData.component_positions.instructions) })
 
-		// jsPsych.init({
-			
-		// 	timeline: timeline,
+        // jsPsych.init({
 
-		// 	on_finish: function(data) {
+        // 	timeline: timeline,
 
-                
+        // 	on_finish: function(data) {
+
+
 
 
         //         // Make JATOS remember that this session was run
@@ -486,10 +264,11 @@
         //         jatos.submitResultData("[conditions_start---" + 
         //         JSON.stringify(jatos.studySessionData) + "---conditions_end]", function(){jatos.startComponentByPos(3)});
 
-		// 	} // on finish
-		// });     // jsPsych.init   
+        // 	} // on finish
+        // });     // jsPsych.init   
 
     }); // jatos on load
 
-    </script>
+</script>
+
 </html>

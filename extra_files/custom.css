@@ -1,0 +1,95 @@
+body {
+    /* background-color:#b9c6c7;  */
+    background-color: #CCCCCC;
+    font-family: sans-serif; 
+    color: black;
+}
+
+p, li {
+    font-size: 100%; 
+    margin: auto;
+    color: black;
+    /* margin-top:0px; 
+    margin-right:100px; 
+    margin-bottom:20px;  */
+    /* margin-left: 100px; */
+}
+
+/* Appears during consent */
+ul {
+    font-size: 100%; 
+    margin-top:50px; 
+    margin-right:100px; 
+    margin-bottom:20px; 
+    margin-left: 100px; 
+    cursor:default;
+}
+
+li {
+    font-size: 100%;
+}
+
+/* Those paragraphs with instrcut class. Used in the instructions, post-practice instructions, and transition. */
+.instruct {
+    width:100%; 
+    color: black; 
+    text-align:center; 
+    cursor:default;
+}
+.header {
+    width:100%; 
+    color: black; 
+    text-align: center;
+    cursor:default;
+}
+
+#wrapper_arena {
+    background-color: white;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+.exposure_exemplars {
+    height: 500px;
+    margin: 10px;
+}
+
+#mask {
+    background-color: gray;
+    height: 450px;
+    width: 300px;
+    margin: auto;
+    
+}
+
+.exposure_prompt_text {
+    margin: 5px;
+    font-size: 90%;
+}
+
+.hline {
+    height: 2px;
+    width: 25%;
+    border: 0;
+    border-top: 1px solid rgb(0, 0, 0);
+    margin: auto;
+    /* padding: 0; */
+}
+
+#query_img {
+    border-bottom: 10px solid gray;
+}
+
+#prompt_el {
+    margin-top: 20px;
+}
+/* 
+.stimuli {
+    margin-left: 10;
+    margin-right: 10;
+} */
+
+#example_trial {
+    margin-top: 20px;
+}
