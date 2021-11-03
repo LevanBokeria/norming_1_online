@@ -26,7 +26,8 @@ function trial_creator_triplets(all_queries, all_refs, all_images, n_sessions,ex
             query_stimulus:     `img/object-9_50-levels_1D/object9F0Level${exemplar_start_level + all_queries[iT]}F1Level14.png`,
             ref_left_stimulus:  `img/object-9_50-levels_1D/object9F0Level${exemplar_start_level + all_refs[iT][0]}F1Level14.png`,
             ref_right_stimulus: `img/object-9_50-levels_1D/object9F0Level${exemplar_start_level + all_refs[iT][1]}F1Level14.png`,
-  
+            ref_left_y_offset: 0,
+            ref_right_y_offset: 0,
             correct_response: correct_response,
 
         }

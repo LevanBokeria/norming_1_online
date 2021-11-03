@@ -29,23 +29,15 @@
 
             jatos.studySessionData.inputData.session_counters.practice++
 
-            session_trials = jatos.studySessionData.inputData.triplet_practice_trials[jatos.studySessionData.inputData.session_counters.practice - 1]
+            session_trials = jatos.studySessionData.inputData.practice_sessions[jatos.studySessionData.inputData.session_counters.practice - 1]
             trial_stage_name = 'practice'
-
-
-        } else if (jatos.studySessionData.inputData.session_counters.exposure == 0) {
-
-            jatos.studySessionData.inputData.session_counters.pre_exposure++
-
-            session_trials = jatos.studySessionData.inputData.pre_exposure_trials[jatos.studySessionData.inputData.session_counters.pre_exposure - 1]
-            trial_stage_name = 'pre_exposure'
 
         } else {
 
-            jatos.studySessionData.inputData.session_counters.post_exposure++
+            jatos.studySessionData.inputData.session_counters.triplet_task++
 
-            session_trials = jatos.studySessionData.inputData.post_exposure_trials[jatos.studySessionData.inputData.session_counters.post_exposure - 1]
-            trial_stage_name = 'post_exposure'
+            session_trials = jatos.studySessionData.inputData.triplet_sessions[jatos.studySessionData.inputData.session_counters.triplet_task - 1]
+            trial_stage_name = 'triplet_task'
 
         }
 
@@ -63,9 +55,6 @@
             stim_min_duration: jatos.studySessionData.inputData.experiment_parameters.triplet_stim_min_duration,
             data: { trial_stage: trial_stage_name },
             on_finish: function (data) {
-
-                // Counterbalancing condition?
-                data.cb_condition = jatos.studySessionData.inputData.cb_condition
 
                 // What session is this
                 data.session = jatos.studySessionData.inputData.session_counters[trial_stage_name]
@@ -90,7 +79,6 @@
             post_trial_gap: 0,
         }
         
-
         // Preload trial
         var all_query_images     = session_trials.map(item => item.query_stimulus)
         var all_ref_left_images  = session_trials.map(item => item.ref_left_stimulus)
@@ -107,18 +95,15 @@
             timeline: [preload_trial, session_procedure],
 
             on_finish: function (data) {
-                // debugger
+                debugger
                 // Get the data and save it!
 
-                if (jatos.studySessionData.inputData.session_counters.pre_exposure == 0) {
+                if (jatos.studySessionData.inputData.session_counters.triplet_task == 0) {
 
                     jatos.studySessionData.outputData.practice.push(...data.values().filter(item => item.trial_stage == trial_stage_name))
 
-                } else if (jatos.studySessionData.inputData.session_counters.exposure == 0) {
-                    jatos.studySessionData.outputData.pre_exposure.push(...data.values().filter(item => item.trial_stage == trial_stage_name))
-
                 } else {
-                    jatos.studySessionData.outputData.post_exposure.push(...data.values().filter(item => item.trial_stage == trial_stage_name))
+                    jatos.studySessionData.outputData.triplet_task.push(...data.values().filter(item => item.trial_stage == trial_stage_name))
                 }
 
                 // Make JATOS remember that this session was run

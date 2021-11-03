@@ -27,15 +27,18 @@
 
 <script>
 
-    var mw = 730;
-    var mh = 740;
-    // var mw = 900;
-    // var mh = 900;
+    // var mw = 730;
+    // var mh = 740;
+    var mw = 200;
+    var mh = 200;
 
     jatos.onLoad(function () {
 
         // Create a variable to hold all the results from components. For some of the components, the keys will be created at the time
-        jatos.studySessionData.inputData = {}
+        jatos.studySessionData.inputData = {
+            triplet_sessions: [],
+            practice_sessions: [],
+        }
         jatos.studySessionData.outputData = {
             consent_results: [],
             browser_device_test_results: [],

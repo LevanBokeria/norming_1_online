@@ -7,7 +7,7 @@
     <script src='./jspsych-6.3.1/jspsych.js'></script>
     <script src='./extra_functions/lodash.js'></script>
     <script src='./extra_functions/trial_creator_triplets.js'></script>
-    <script src='./extra_functions/trial_creator_exposure.js'></script>
+    <script src='./extra_functions/triplet_creator.js'></script>
     <script src='./extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
     <script src='./extra_functions/combinations.js'></script>
     <link href='./jspsych-6.3.1/css/jspsych.css' rel='stylesheet' type='text/css'>
@@ -28,8 +28,6 @@
 
     jatos.onLoad(function () {
         // debugger
-
-        // let c = new Combinatorics.Combination('abcdefgh', 4);
 
         // Define all the conditions here ///////////////////////////////////////////////////////////
         var timeline = []
@@ -100,53 +98,26 @@
             './img/object-9_50-levels_1D/object9F0Level8F1Level14.png',
             './img/object-9_50-levels_1D/object9F0Level9F1Level14.png']
 
-        // How many exemplars are we using
-        var n_exemplars = 10
 
-        // From which level do we start taking n_exemplars?
-        var exemplar_start_level = 14
-
+        // How many exposure sessions
+        jatos.studySessionData.inputData.experiment_parameters = {
+            n_exemplars: 10,
+            exemplar_start_level: 14,
+            n_practice_sessions: 1,
+            n_triplet_sessions: 6,
+            triplet_trial_dur: 5000,
+            fixation_trial_dur: 500,
+            triplet_trial_iti: 500,
+            triplet_stim_min_duration: 2000, // minimum milliseconds to display birds
+        }
 
         // Generate holders for all the referents
-        var all_refs = []
-        var all_queries = []
+        // var all_refs = []
+        // var all_queries = []
+        
+        var [all_refs,all_queries] = triplet_creator(jatos.studySessionData.inputData.experiment_parameters.n_exemplars)
 
-
-        for (iT = 0; iT < n_exemplars; iT++) {
-
-            // For each exemplar, generate all combinations of 2 from all the rest of exemplars
-            let all_idxs = Array(n_exemplars).fill().map((element, index) => index)
-
-            // Take all except iT
-            all_idxs.splice(all_idxs.indexOf(iT), 1)
-
-            // Create all possible permutations of n choose 2
-            let refs = k_combinations(all_idxs, 2)
-
-            // Create the array of the query items with the same length
-            let queries = Array(refs.length).fill(iT)
-
-            // Add these to the main variables
-            all_refs.push(...refs)
-            all_queries.push(...queries)
-
-        }
-
-        // Now, randomly, flip the referent orders
-        let n_trials = all_refs.length
-        let idx_sequences = Array(n_trials).fill().map((el, idx) => idx)
-
-        let idx_to_flip = jsPsych.randomization.sampleWithoutReplacement(idx_sequences, n_trials / 2)
-
-        for (iFlip = 0; iFlip < idx_to_flip.length; iFlip++) {
-
-            let curr_idx = idx_to_flip[iFlip]
-
-            all_refs[curr_idx] = all_refs[curr_idx].reverse()
-
-        }
-
-        // debugger
+        debugger
         // // Randomly shuffle both the query array and the ref array
         // let rand_idx = jsPsych.randomization.shuffle(idx_sequences)
 
@@ -154,44 +125,22 @@
         // all_refs    = rand_idx.map(i => all_refs[i]);
 
         // Now finally, create the actual trials 
-        let n_sessions = 6
-        jatos.studySessionData.inputData.all_sessions = trial_creator_triplets(
+        jatos.studySessionData.inputData.triplet_sessions = trial_creator_triplets(
             all_queries,
             all_refs,
             jatos.studySessionData.inputData.all_exemplars,
-            n_sessions,
-            exemplar_start_level
+            jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions,
+            jatos.studySessionData.inputData.experiment_parameters.exemplar_start_level
         )
 
-
+        // Practice sessions
         debugger
-        // How many exposure sessions
-        jatos.studySessionData.inputData.experiment_parameters = {
-            n_exposure_sessions: 7,
-            n_practice_sessions: 1,
-            n_pre_exp_triplet_sessions: 2,
-            n_post_exp_triplet_sessions: 2,
-            n_reps_per_triplet: 2,
-            exposure_trial_dur: 3000,
-            triplet_trial_dur: 5000,
-            fixation_trial_dur: 500,
-            triplet_trial_iti: 500,
-            exposure_stim_min_duration: 2000, // minimum milliseconds to display birds
-            triplet_stim_min_duration: 2000, // minimum milliseconds to display birds
-        }
+        jatos.studySessionData.inputData.practice_sessions[1] = jatos.studySessionData.inputData.triplet_sessions[2].slice(0,5)
 
         jatos.studySessionData.inputData.session_counters = {
             practice: 0,
             triplet_task: 0,
         }
-
-        // Practice trials 
-        jatos.studySessionData.inputData.triplet_practice_trials = trial_creator_triplets(jatos.studySessionData.inputData.triplet_practice_params, jatos.studySessionData.inputData.experiment_parameters.n_reps_per_triplet,
-            jatos.studySessionData.inputData.experiment_parameters.n_practice_sessions)
-
-        // Create the pre-exposure trials
-        jatos.studySessionData.inputData.pre_exposure_trials = trial_creator_triplets(jatos.studySessionData.inputData.pre_exposure_params, jatos.studySessionData.inputData.experiment_parameters.n_reps_per_triplet,
-            jatos.studySessionData.inputData.experiment_parameters.n_pre_exp_triplet_sessions)
 
         if (jatos.componentJsonInput.debugMode) {
             // debugger
@@ -238,7 +187,6 @@
             })
             jatos.studySessionData.inputData.post_exposure_trials = temp_post_exp
         }
-
 
         // Make JATOS remember that this session was run
         jatos.studySessionData.latestFinishedComponentId = jatos.componentId;
