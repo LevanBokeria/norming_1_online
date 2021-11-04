@@ -43,11 +43,9 @@
 			'It will last about 40 minutes. You will be paid a minimum of £4, plus a bonus (see below).</p>' +
 			'<p>The study is broken up into several sections:</p>' +
 			'<li> Consent, instructions and practice session: takes ~5 minutes. </li>' +
-			'<li> Similarity task #1. Takes ~5 minutes.</li>' +
-			'<li> Same/Different judgment task. Takes ~20 minutes.</li>' +
-			'<li> Similarity task #2. Takes ~5 minutes.</li>' +
+			'<li> Similarity task: Takes ~30 minutes. You will have breaks.</li>' +
 			'<li> Debriefing survey: ~5 minutes.</li>' +
-			'<p><br>You will see instructions at the beginning of each of these tasks.</p>' +
+			'<p><br>You will see detailed instructions at the beginning of the task.</p>' +
 			'<p> Total payment for completing the full experiment: £4 </p>' +
 			'<p style="font-size:22px;"><br><b><u>Please note that you will get an additional bonus payment of up to £3 depending on the quality of your responses!</b></u><br><br>' +
 			'<p>However, if the quality of your responses are consistently low, such as if you miss too many trials, you will not be compensated for your participation.</p>' +
@@ -138,7 +136,6 @@
 
 					// Save the consent infomration
 					jatos.studySessionData.outputData.consent_results = jsPsych.data.get().values()
-
 
 					// Make JATOS remember that this session was run
 					jatos.studySessionData.latestFinishedComponentId = jatos.componentId;

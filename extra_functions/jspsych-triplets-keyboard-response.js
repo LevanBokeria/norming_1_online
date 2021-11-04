@@ -120,12 +120,10 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
     var trial_counter_el = document.createElement('P')
     let n_total_trials = []
 
-    if (jatos.studySessionData.inputData.session_counters.pre_exposure == 0) {
-      n_total_trials = jatos.studySessionData.inputData.triplet_practice_trials[0].length
-    } else if (jatos.studySessionData.inputData.session_counters.exposure == 0) {
-      n_total_trials = jatos.studySessionData.inputData.pre_exposure_trials[0].length
+    if (jatos.studySessionData.inputData.session_counters.triplet_task == 0) {
+      n_total_trials = jatos.studySessionData.inputData.practice_sessions[0].length
     } else {
-      n_total_trials = jatos.studySessionData.inputData.post_exposure_trials[0].length
+      n_total_trials = jatos.studySessionData.inputData.triplet_sessions[jatos.studySessionData.inputData.session_counters.triplet_task - 1].length
     }
 
     trial_counter_el.innerText = 'Trial ' + n_trials + ' of ' + n_total_trials
@@ -134,9 +132,9 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
 
     // Create the elements for button instructions
     var left_button_text_el = document.createElement('P')
-    left_button_text_el.innerText = 'Press "q" for the left bird'
+    left_button_text_el.innerText = 'Press "q" for the left object'
     var right_button_text_el = document.createElement('P')
-    right_button_text_el.innerText = 'Press "p" for the left bird'
+    right_button_text_el.innerText = 'Press "p" for the left object'
 
     top_flex_el.appendChild(left_button_text_el)
     top_flex_el.appendChild(trial_counter_el)
@@ -154,8 +152,8 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
     // Create an initial div as an arena
     wrapper_arena = document.createElement('div')
     wrapper_arena.id = 'wrapper_arena'
-    wrapper_arena.style.height = '700px'
-    wrapper_arena.style.width = '700px'
+    wrapper_arena.style.height = '500px'
+    wrapper_arena.style.width = '1000px'
     wrapper_arena.style.border = '1px solid black'
     wrapper_arena.style.display = 'flex'
     wrapper_arena.style["justify-content"] = 'center'
@@ -167,7 +165,7 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
     // Create the ref_left element
     var ref_left_img_el_html = '<img src="' + trial.ref_left_stimulus + 
     '" class="stimuli" id="ref_left_img" style="height: ' + trial.stimulus_height.toString() + 
-    'px; margin-top: ' + trial.ref_left_y_offset.toString() + 'px;">'
+    'px; margin-top: ' + trial.ref_left_y_offset.toString() + 'px; margin-right: -100px;">'
 
     var query_img_el_html = '<img src="' + trial.query_stimulus + 
     '" class="stimuli" id="query_img" style="height: ' + trial.stimulus_height.toString() + 
@@ -175,7 +173,7 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
 
     var ref_right_img_el_html = '<img src="' + trial.ref_right_stimulus + 
     '" class="stimuli" id="ref_right_img" style="height: ' + trial.stimulus_height.toString() + 
-    'px; margin-top: ' + trial.ref_right_y_offset.toString() + 'px;">'    
+    'px; margin-top: ' + trial.ref_right_y_offset.toString() + 'px; margin-left: -100px;">'    
 
     // wrapper_arena.appendChild(ref_right_img_el)
     wrapper_arena.innerHTML += ref_left_img_el_html

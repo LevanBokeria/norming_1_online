@@ -46,90 +46,16 @@
 
 			let instructions_text = []
 			let instruction_pages = []
+			debugger
+			if (jatos.studySessionData.latestFinishedComponentPos == jatos.studySessionData.inputData.component_positions.triplet_task) {
 
-
-			// Was last finished condition an exposure one?
-			if (jatos.studySessionData.latestFinishedComponentPos == jatos.studySessionData.inputData.component_positions.exposure) {
-
-				// Check if all sessions done:
-				if (jatos.studySessionData.inputData.experiment_parameters.n_exposure_sessions == jatos.studySessionData.inputData.session_counters.exposure) {
-
-					// Calculate performance on the "same" trials
-					let perc_corr_same = calc_perf(
-						jatos.studySessionData.outputData.exposure.filter(
-							item => item.session == jatos.studySessionData.inputData.session_counters.exposure & item.correct_response == 'q')
-					)
-
-					// Now difference trials
-					let perc_corr_diff = calc_perf(
-						jatos.studySessionData.outputData.exposure.filter(
-							item => item.session == jatos.studySessionData.inputData.session_counters.exposure & item.correct_response == 'p')
-					)
-
-					// Calculate for all trials
-					let perc_corr_all = calc_perf(
-						jatos.studySessionData.outputData.exposure.filter(
-							item => item.session == jatos.studySessionData.inputData.session_counters.exposure
-						)
-					)
-
-					instructions_text = 'Thanks! For the last session, you were accurate on ' + Math.floor(perc_corr_same) + '% of the "same" trials and ' + Math.floor(perc_corr_diff) + '% of the "different" trials! Overall, you were ' + Math.floor(perc_corr_all) + '% accurate on all trials. <br> You have finished the "Same/Different" task. <br> <strong>Please take a break of no more than 1 minute!</strong><br>Next, you will do the similarity judgment task one more time.'
-
-					instruction_pages = [
-						'<div class= "header">' +
-						'<h1>' + page_title + '</h1>' +
-						'</div>' +
-						'<div class="instruct">' +
-						'<p>' + instructions_text + '</p>' +
-						'</div>',
-					]
-
-					comp_to_start = jatos.studySessionData.inputData.component_positions.triplet_task
-
-				} else {
-
-					// Calculate performance on the "same" trials
-					let perc_corr_same = calc_perf(
-						jatos.studySessionData.outputData.exposure.filter(
-							item => item.session == jatos.studySessionData.inputData.session_counters.exposure & item.correct_response == 'q')
-					)
-
-					let perc_corr_diff = calc_perf(
-						jatos.studySessionData.outputData.exposure.filter(
-							item => item.session == jatos.studySessionData.inputData.session_counters.exposure & item.correct_response == 'p')
-					)
-
-					// Calculate for all trials
-					let perc_corr_all = calc_perf(
-						jatos.studySessionData.outputData.exposure.filter(
-							item => item.session == jatos.studySessionData.inputData.session_counters.exposure
-						)
-					)
-
-					instructions_text = 'Thanks! For the last session, you were accurate on ' + Math.floor(perc_corr_same) + '% of the "same" trials and ' + Math.floor(perc_corr_diff) + '% of the "different" trials! Overall, you were ' + Math.floor(perc_corr_all) + '% accurate on all trials.<br> You have finished session ' + jatos.studySessionData.inputData.session_counters.exposure + ' of ' + jatos.studySessionData.inputData.experiment_parameters.n_exposure_sessions + ' of the "Same/Different" task. Please take a short break of maximum 30 seconds and then continue.'
-
-					instruction_pages = [
-						'<div class= "header">' +
-						'<h1>' + page_title + '</h1>' +
-						'</div>' +
-						'<div class="instruct">' +
-						'<p>' + instructions_text + '</p>' +
-						'</div>',
-					]
-
-					comp_to_start = jatos.studySessionData.inputData.component_positions.exposure
-
-				}
-
-			} else if (jatos.studySessionData.latestFinishedComponentPos == jatos.studySessionData.inputData.component_positions.triplet_task) {
-
-				// Check if pre-exposure happened already or not
-				if (jatos.studySessionData.inputData.session_counters.pre_exposure == 0) {
+				// Check if its after the practice trials
+				if (jatos.studySessionData.inputData.session_counters.triplet_task == 0) {
 
 					// Calculate performance
 					let perc_corr = calc_perf(jatos.studySessionData.outputData.practice)
 
-					instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> Those were practice trials. Now you will do the real trials! <br><br> You will do a total of ' + jatos.studySessionData.inputData.experiment_parameters.n_pre_exp_triplet_sessions + ' sessions, each with ' + jatos.studySessionData.inputData.pre_exposure_trials[0].length + ' trials.'
+					instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> Those were practice trials. Now you will do the real trials! <br><br> You will do a total of ' + jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions + ' sessions, each with ' + jatos.studySessionData.inputData.triplet_sessions[0].length + ' trials.'
 
 					instruction_pages = [
 						'<div class= "header">' +
@@ -141,100 +67,15 @@
 					]
 
 					comp_to_start = jatos.studySessionData.inputData.component_positions.triplet_task
-				} else if (jatos.studySessionData.inputData.session_counters.exposure == 0) {
-					// So we're done with pre-exposure
-					// debugger
-					// Now check if all sessions ran or not
-					if (jatos.studySessionData.inputData.session_counters.pre_exposure == jatos.studySessionData.inputData.experiment_parameters.n_pre_exp_triplet_sessions) {
-						// debugger
-						// Calculate performance
-						let perc_corr = calc_perf(jatos.studySessionData.outputData.pre_exposure.filter(item => item.session == jatos.studySessionData.inputData.session_counters.pre_exposure))
-
-						let instructions_text_1 =
-							'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> ' +
-							'That was the end of the similarity task #1. ' +
-							'<br><b>Now we will move onto the Same/Different task.</b> ' +
-							'<br><b style="font-size: 150%; color: red;">Please attentively read the instructions below!</b>' +
-							'<br><br>For this next task, you will see these birds show up on the screen one-by-one. The task is simple: ' +
-							'<br>If the bird you see is exactly the same as you saw on the previous trial, <b>press the button "q"</b>. ' +
-							'<br>If the current bird is different than the previous one, <b>press the button "p".</b>' +
-							'<br><br>For example: the 2nd bird you see should be compared to the 1st one, the 3rd should be compared to the 2nd, the 4th to the 3rd, etc.'
-
-						let instructions_text_2 = '<br>Each bird will stay on the screen for at least ' +
-							(jatos.studySessionData.inputData.experiment_parameters.exposure_stim_min_duration / 1000) +
-							' seconds, but you can make your response before that too, it will still get registered.' +
-							'<br><br> However, if you do not respond within ' +
-							(jatos.studySessionData.inputData.experiment_parameters.exposure_trial_dur / 1000) +
-							' seconds, the trial will be considered as missed and the next trial will begin.' +
-							'<br>Please try to be as accurate as possible!'
-
-						let instructions_text_3 = '<br> You will do a total of ' +
-							jatos.studySessionData.inputData.experiment_parameters.n_exposure_sessions +
-							' sessions for the Same/Different task, each with up to ' +
-							jatos.studySessionData.inputData.exposure_trials[0].length +
-							' trials.' +
-							'<br><br>The very 1st bird you see for each of these ' +
-							jatos.studySessionData.inputData.experiment_parameters.n_exposure_sessions +
-							' sessions should be skipped. Start comparing from the 2nd bird of each session!' +
-							'<br><br><b>Please take a 1 minute break and then start the next task!</b>'
-
-						page_title = 'Beginning the Same/Different task!'
-
-						instruction_pages = [
-							'<div class= "header">' +
-							'<h1>' + page_title + '</h1>' +
-							'</div>' +
-							'<div class="instruct">' +
-							'<p>' + instructions_text_1 + '</p>' +
-							'</div>',
-							'<div class= "header">' +
-							'<h1>' + page_title + '</h1>' +
-							'</div>' +
-							'<div class="instruct">' +
-							'<p>' + instructions_text_2 + '</p>' +
-							'</div>',
-							'<div class= "header">' +
-							'<h1>' + page_title + '</h1>' +
-							'</div>' +
-							'<div class="instruct">' +
-							'<p>' + instructions_text_3 + '</p>' +
-							'</div>',
-						]
-
-						comp_to_start = jatos.studySessionData.inputData.component_positions.exposure
-
-					} else {
-
-						// debugger
-						// Calculate performance
-						let perc_corr = calc_perf(jatos.studySessionData.outputData.pre_exposure.filter(item => item.session == jatos.studySessionData.inputData.session_counters.pre_exposure))
-
-
-						instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> You have finished session ' + jatos.studySessionData.inputData.session_counters.pre_exposure + ' of ' + jatos.studySessionData.inputData.experiment_parameters.n_pre_exp_triplet_sessions + ' of the similarity  task. Please take a short break of maximum 30 seconds and then continue.'
-
-						instruction_pages = [
-							'<div class= "header">' +
-							'<h1>' + page_title + '</h1>' +
-							'</div>' +
-							'<div class="instruct">' +
-							'<p>' + instructions_text + '</p>' +
-							'</div>',
-						]
-
-						comp_to_start = jatos.studySessionData.inputData.component_positions.triplet_task
-
-					}
 
 				} else {
-
-					// So we're done with post-exposure
+					// So we're done one of the triplet task sessions
 
 					// Now check if all sessions ran or not
-					if (jatos.studySessionData.inputData.session_counters.post_exposure == jatos.studySessionData.inputData.experiment_parameters.n_post_exp_triplet_sessions) {
+					if (jatos.studySessionData.inputData.session_counters.triplet_task == jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions) {
 
-						// debugger
 						// Calculate performance
-						let perc_corr = calc_perf(jatos.studySessionData.outputData.post_exposure.filter(item => item.session == jatos.studySessionData.inputData.session_counters.post_exposure))
+						let perc_corr = calc_perf(jatos.studySessionData.outputData.triplet_task.filter(item => item.session == jatos.studySessionData.inputData.session_counters.triplet_task))
 
 						instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> You are finished with the experiment! <br> Please complete some debriefing questions.'
 
@@ -249,16 +90,17 @@
 							'</div>',
 						]
 
-
-						comp_to_start = jatos.studySessionData.inputData.component_positions.debriefing
+						comp_to_start = jatos.studySessionData.inputData.component_positions.debriefing  
 
 					} else {
 
-						// debugger
-						// Calculate performance
-						let perc_corr = calc_perf(jatos.studySessionData.outputData.post_exposure.filter(item => item.session == jatos.studySessionData.inputData.session_counters.post_exposure))
+						// So we're done with just one of the triplet task sessions
 
-						instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> You have finished session ' + jatos.studySessionData.inputData.session_counters.post_exposure + ' of ' + jatos.studySessionData.inputData.experiment_parameters.n_post_exp_triplet_sessions + ' of the similarity  task. Please take a short break of maximum 30 seconds and then continue.'
+						// Calculate performance
+						let perc_corr = calc_perf(jatos.studySessionData.outputData.triplet_task.filter(item => item.session == jatos.studySessionData.inputData.session_counters.triplet_task))
+
+
+						instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> You have finished session ' + jatos.studySessionData.inputData.session_counters.triplet_task + ' of ' + jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions + ' of the similarity  task. Please take a short break of maximum 30 seconds and then continue.'
 
 						instruction_pages = [
 							'<div class= "header">' +
@@ -272,7 +114,8 @@
 						comp_to_start = jatos.studySessionData.inputData.component_positions.triplet_task
 
 					}
-				}
+
+				} 
 
 			}
 
@@ -290,6 +133,10 @@
 				timeline: timeline,
 
 				on_finish: function (data) {
+
+					// Save this data
+					debugger
+					jatos.studySessionData.outputData.breaks.push(jsPsych.data.get().values())
 
 					// Make JATOS remember that this session was run
 					jatos.studySessionData.latestFinishedComponentId = jatos.componentId;

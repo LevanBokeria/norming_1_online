@@ -78,7 +78,7 @@ li {
 }
 
 #query_img {
-    border-bottom: 10px solid gray;
+    /* border: 5px solid gray; */
 }
 
 #prompt_el {
