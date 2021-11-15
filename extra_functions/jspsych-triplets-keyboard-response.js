@@ -134,13 +134,13 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
     var left_button_text_el = document.createElement('P')
     left_button_text_el.innerText = 'Press "q" for the left object'
     var right_button_text_el = document.createElement('P')
-    right_button_text_el.innerText = 'Press "p" for the left object'
+    right_button_text_el.innerText = 'Press "p" for the right object'
 
     top_flex_el.appendChild(left_button_text_el)
     top_flex_el.appendChild(trial_counter_el)
     top_flex_el.appendChild(right_button_text_el)
 
-    display_element.appendChild(top_flex_el)
+    // display_element.appendChild(top_flex_el)
 
     var feedback_text_el = document.createElement('P')
     feedback_text_el.innerText = 'missed...'
@@ -160,7 +160,7 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
     wrapper_arena.style["align-items"] = 'center'
 
     // Add the arena to the display element
-    display_element.appendChild(wrapper_arena)
+    // display_element.appendChild(wrapper_arena)
   
     // Create the ref_left element
     var ref_left_img_el_html = '<img src="' + trial.ref_left_stimulus + 
@@ -175,10 +175,11 @@ jsPsych.plugins["triplets-keyboard-response"] = (function () {
     '" class="stimuli" id="ref_right_img" style="height: ' + trial.stimulus_height.toString() + 
     'px; margin-top: ' + trial.ref_right_y_offset.toString() + 'px; margin-left: -100px;">'    
 
-    // wrapper_arena.appendChild(ref_right_img_el)
-    wrapper_arena.innerHTML += ref_left_img_el_html
-    wrapper_arena.innerHTML += query_img_el_html
-    wrapper_arena.innerHTML += ref_right_img_el_html
+    // debugger
+    var html_to_append = ref_left_img_el_html + query_img_el_html + ref_right_img_el_html
+    wrapper_arena.innerHTML += html_to_append
+
+    display_element.innerHTML += top_flex_el.outerHTML + wrapper_arena.outerHTML
 
     // store response
     var response = {

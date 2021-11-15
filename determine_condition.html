@@ -47,62 +47,20 @@
 
         // All images
         jatos.studySessionData.inputData.all_exemplars = [
-            './img/object-9_50-levels_1D/object9F0Level0F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level10F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level11F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level12F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level13F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level14F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level15F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level16F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level17F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level18F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level19F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level1F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level20F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level21F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level22F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level23F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level24F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level25F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level26F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level27F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level28F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level29F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level2F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level30F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level31F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level32F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level33F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level34F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level35F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level36F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level37F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level38F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level39F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level3F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level40F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level41F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level42F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level43F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level44F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level45F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level46F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level47F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level48F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level49F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level4F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level5F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level6F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level7F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level8F1Level14.png',
-            './img/object-9_50-levels_1D/object9F0Level9F1Level14.png']
+            './img/object-9_12-minus-2-levels_1D/object9F0Level2F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level3F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level4F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level5F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level6F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level7F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level8F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level9F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level10F1Level3.png',
+            './img/object-9_12-minus-2-levels_1D/object9F0Level11F1Level3.png']
 
 
         // How many exposure sessions
         jatos.studySessionData.inputData.experiment_parameters = {
-            n_exemplars: 10,
-            exemplar_start_level: 14,
             n_practice_sessions: 1,
             n_triplet_sessions: 6,
             triplet_trial_dur: 5000,
@@ -110,7 +68,7 @@
             triplet_stim_min_duration: 2000, // minimum milliseconds to display objectss
         }
 
-        var [all_refs, all_queries] = triplet_creator(jatos.studySessionData.inputData.experiment_parameters.n_exemplars)
+        var [all_refs, all_queries] = triplet_creator(jatos.studySessionData.inputData.all_exemplars.length)
 
         // Now finally, create the actual trials 
         jatos.studySessionData.inputData.triplet_sessions = trial_creator_triplets(
@@ -118,11 +76,35 @@
             all_refs,
             jatos.studySessionData.inputData.all_exemplars,
             jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions,
-            jatos.studySessionData.inputData.experiment_parameters.exemplar_start_level
         )
-
+        // debugger
         // Practice sessions
-        jatos.studySessionData.inputData.practice_sessions[0] = jatos.studySessionData.inputData.triplet_sessions[2].slice(0, 5)
+        jatos.studySessionData.inputData.practice_exemplars = [
+            './img/object-9_50-levels_1D/object9F0Level11F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level15F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level21F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level25F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level29F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level33F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level38F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level42F1Level14.png',
+            './img/object-9_50-levels_1D/object9F0Level47F1Level14.png']        
+
+        jatos.studySessionData.inputData.practice_sessions = trial_creator_triplets(
+            [0,1,2,3,4,5,6,7,8,1],
+            [[1,5], //0
+            [3,8], //1
+            [0,8], //2
+            [2,7], //3
+            [0,5], //4
+            [6,0], //5
+            [8,2], //6
+            [6,8], //7
+            [6,7], //8
+            [0,3]], //9
+            jatos.studySessionData.inputData.practice_exemplars,
+            1
+        )
 
         jatos.studySessionData.inputData.session_counters = {
             practice: 0,
