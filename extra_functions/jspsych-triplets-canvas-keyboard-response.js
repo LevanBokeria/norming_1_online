@@ -149,21 +149,22 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
     wrapper_arena.style.height = '500px'
     wrapper_arena.style.width = '1000px'
     wrapper_arena.style.border = '1px solid black'
-    // wrapper_arena.style.display = 'flex'
-    // wrapper_arena.style["justify-content"] = 'center'
-    // wrapper_arena.style["align-items"] = 'center'
+    wrapper_arena.style.display = 'flex'
+    wrapper_arena.style["justify-content"] = 'center'
+    wrapper_arena.style["align-items"] = 'center'    
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     // Now, create the canvas element
-    debugger
+    // debugger
 
     var height, width;
     var image_drawn = false
 
     // create canvas element and image
     var canvas = document.createElement("canvas");
-    // canvas.id = "jspsych-image-keyboard-response-stimulus";
+    canvas.id = "jspsych-image-keyboard-response-stimulus";
     canvas.style.margin = 0;
     canvas.style.padding = 0;
     canvas.height = 500;
@@ -214,9 +215,9 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
     if (query_img.complete && Number.isFinite(width) && Number.isFinite(height)) {
       // if image has loaded and width/height have been set, then draw it now
       // (don't rely on query_img onload function to draw image when image is in the cache, because that causes a delay in the image presentation)
-      ctx.drawImage(query_img, 0, 0, width, height);
-      ctx.drawImage(ref_left_img, 300, 0, width, height);
-      ctx.drawImage(ref_right_img, 600, 0, width, height);      
+      ctx.drawImage(ref_left_img, -50, 0, width, height);
+      ctx.drawImage(query_img, 300, 0, width, height);
+      ctx.drawImage(ref_right_img, 650, 0, width, height);      
       image_drawn = true;
     }
 
@@ -239,7 +240,7 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
 
     display_element.appendChild(top_flex_el)
     display_element.appendChild(wrapper_arena)
-    // display_element.innerHTML += top_flex_el.outerHTML + wrapper_arena.outerHTML
+    // debugger
 
     // store response
     var response = {
@@ -288,9 +289,9 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
     };
 
     var blank_board = function (info) {
-
+      debugger
       // Make everything disappear
-      document.querySelectorAll('.stimuli').forEach(item => item.remove())
+      document.querySelector('#jspsych-image-keyboard-response-stimulus').remove()
 
       // Display 'missed' as the message if they missed!
       if (info.rt == null) {
