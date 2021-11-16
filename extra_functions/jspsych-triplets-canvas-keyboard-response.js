@@ -147,11 +147,11 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
     wrapper_arena = document.createElement('div')
     wrapper_arena.id = 'wrapper_arena'
     wrapper_arena.style.height = '500px'
-    wrapper_arena.style.width = '1000px'
+    wrapper_arena.style.width = '1050px'
     wrapper_arena.style.border = '1px solid black'
     wrapper_arena.style.display = 'flex'
     wrapper_arena.style["justify-content"] = 'center'
-    wrapper_arena.style["align-items"] = 'center'    
+    wrapper_arena.style["align-items"] = 'center'
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +168,7 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
     canvas.style.margin = 0;
     canvas.style.padding = 0;
     canvas.height = 500;
-    canvas.width = 1000;    
+    canvas.width = 1000;
     var ctx = canvas.getContext("2d");
     var query_img = new Image();
     var ref_left_img = new Image();
@@ -181,8 +181,8 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
     //   }
     // };
 
-    query_img.src     = trial.query_stimulus;
-    ref_left_img.src  = trial.ref_left_stimulus;
+    query_img.src = trial.query_stimulus;
+    ref_left_img.src = trial.ref_left_stimulus;
     ref_right_img.src = trial.ref_right_stimulus;
 
     // get/set image height and width - this can only be done after image loads because uses image's naturalWidth/naturalHeight properties
@@ -217,7 +217,7 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
       // (don't rely on query_img onload function to draw image when image is in the cache, because that causes a delay in the image presentation)
       ctx.drawImage(ref_left_img, -50, 0, width, height);
       ctx.drawImage(query_img, 300, 0, width, height);
-      ctx.drawImage(ref_right_img, 650, 0, width, height);      
+      ctx.drawImage(ref_right_img, 650, 0, width, height);
       image_drawn = true;
     }
 
@@ -283,6 +283,11 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
 
       if (trial.response_ends_trial) {
         if (min_duration_over) {
+
+          // kill any remaining setTimeout handlers
+          // Otherwise, sometimes you respond but it doesn't register in time, and "missed" shows up 
+          jsPsych.pluginAPI.clearAllTimeouts();
+
           blank_board(info);
         }
       }
