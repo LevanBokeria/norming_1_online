@@ -7,7 +7,7 @@
     <script src='./jspsych-6.3.1/jspsych.js'></script>
     <script src='./extra_functions/lodash.js'></script>
     <script src='./extra_functions/jquery-3.4.1.js' type='text/javascript'></script>
-    <script src="./extra_functions/jspsych-triplets-keyboard-response.js"></script>
+    <script src="./extra_functions/jspsych-triplets-canvas-keyboard-response.js"></script>
     <script src="./jspsych-6.3.1/plugins/jspsych-preload.js"></script>
     <script src="./jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
     <link href='./jspsych-6.3.1/css/jspsych.css' rel='stylesheet' type='text/css'>
@@ -42,13 +42,14 @@
         }
 
         var trial = {
-            type: 'triplets-keyboard-response',
+            type: 'triplets-canvas-keyboard-response',
             query_stimulus: jsPsych.timelineVariable('query_stimulus'),
             ref_left_stimulus: jsPsych.timelineVariable('ref_left_stimulus'),
             ref_right_stimulus: jsPsych.timelineVariable('ref_right_stimulus'),
             ref_left_y_offset: jsPsych.timelineVariable('ref_left_y_offset'),
             ref_right_y_offset: jsPsych.timelineVariable('ref_right_y_offset'),
             stimulus_height: 400,
+            maintain_aspect_ration: true,
             choices: ['q', 'p'],
             trial_duration: jatos.studySessionData.inputData.experiment_parameters.triplet_trial_dur,
             post_response_delay: jatos.studySessionData.inputData.experiment_parameters.triplet_trial_iti,
