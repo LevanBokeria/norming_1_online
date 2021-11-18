@@ -2,20 +2,23 @@ function trial_creator_triplets(all_queries, all_refs, all_images, n_sessions) {
     // debugger
     let all_trials = []
 
+    // Extract the dimension values from all_images array
+    var image_dim_values = all_images.map(item => item.split('object9F0Level')[1].split('F1')[0])
+
     for (iT = 0; iT < all_queries.length; iT++) {
 
         let correct_response
 
         // Whats the "correct" response?
-        if (all_queries[iT] - all_refs[iT][0] == all_queries[iT] - all_refs[iT][1]) {
+        if (Math.abs(image_dim_values[all_queries[iT]] - image_dim_values[all_refs[iT][0]]) == Math.abs(image_dim_values[all_queries[iT]] - image_dim_values[all_refs[iT][1]])) {
 
             correct_response = null
 
-        } else if (all_queries[iT] - all_refs[iT][0] < all_queries[iT] - all_refs[iT][1]) {
+        } else if (Math.abs(image_dim_values[all_queries[iT]] - image_dim_values[all_refs[iT][0]]) < Math.abs(image_dim_values[all_queries[iT]] - image_dim_values[all_refs[iT][1]])) {
 
             correct_response = 'q'
 
-        } else if (all_queries[iT] - all_refs[iT][0] > all_queries[iT] - all_refs[iT][1]) {
+        } else if (Math.abs(image_dim_values[all_queries[iT]] - image_dim_values[all_refs[iT][0]]) > Math.abs(image_dim_values[all_queries[iT]] - image_dim_values[all_refs[iT][1]])) {
 
             correct_response = 'p'
 

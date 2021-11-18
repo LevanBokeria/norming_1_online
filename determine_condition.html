@@ -59,6 +59,8 @@
             './img/object-9_120-levels_1D/object9F0Level109F1Level40.png',
             './img/object-9_120-levels_1D/object9F0Level119F1Level40.png']
 
+        jatos.studySessionData.inputData.all_exemplar_dim_values = jatos.studySessionData.inputData.all_exemplars.map(item => item.split('object9F0Level')[1].split('F1')[0])
+
 
         // How many exposure sessions
         jatos.studySessionData.inputData.experiment_parameters = {
@@ -90,20 +92,21 @@
             './img/object-9_120-levels_1D/object9F0Level84F1Level40.png',
             './img/object-9_120-levels_1D/object9F0Level94F1Level40.png',
             './img/object-9_120-levels_1D/object9F0Level104F1Level40.png',
-            './img/object-9_120-levels_1D/object9F0Level114F1Level40.png',]        
+            './img/object-9_120-levels_1D/object9F0Level114F1Level40.png']
+        jatos.studySessionData.inputData.practice_exemplar_dim_values = jatos.studySessionData.inputData.practice_exemplars.map(item => item.split('object9F0Level')[1].split('F1')[0])
 
         jatos.studySessionData.inputData.practice_sessions = trial_creator_triplets(
-            [0,1,2,3,4,5,6,7,8,9],
-            [[1,5], //0
-            [3,8], //1
-            [0,8], //2
-            [2,7], //3
-            [0,5], //4
-            [6,0], //5
-            [8,2], //6
-            [6,8], //7
-            [6,7], //8
-            [6,8]], //9
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            [[1, 5], //0
+            [3, 8], //1
+            [0, 8], //2
+            [2, 7], //3
+            [0, 5], //4
+            [6, 0], //5
+            [8, 2], //6
+            [6, 8], //7
+            [6, 7], //8
+            [6, 8]], //9
             jatos.studySessionData.inputData.practice_exemplars,
             1
         )
@@ -127,10 +130,10 @@
             }
 
             let n_debug_trials = jatos.componentJsonInput.n_debug_trials
-            
+
             // Remove extra sessions
             jatos.studySessionData.inputData.triplet_sessions.splice(jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions,
-            jatos.studySessionData.inputData.triplet_sessions.length - jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions)
+                jatos.studySessionData.inputData.triplet_sessions.length - jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions)
 
             // Shorten the trials
             let temp_practice = []

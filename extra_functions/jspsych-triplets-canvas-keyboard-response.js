@@ -221,23 +221,6 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
       image_drawn = true;
     }
 
-    // // Create the ref_left element
-    // var ref_left_img_el_html = '<img src="' + trial.ref_left_stimulus +
-    //   '" class="stimuli" id="ref_left_img" style="height: ' + trial.stimulus_height.toString() +
-    //   'px; margin-top: ' + trial.ref_left_y_offset.toString() + 'px; margin-right: -100px;">'
-
-    // var query_img_el_html = '<img src="' + trial.query_stimulus +
-    //   '" class="stimuli" id="query_img" style="height: ' + trial.stimulus_height.toString() +
-    //   'px; margin-right: 20px; margin-left: 20px;">'
-
-    // var ref_right_img_el_html = '<img src="' + trial.ref_right_stimulus +
-    //   '" class="stimuli" id="ref_right_img" style="height: ' + trial.stimulus_height.toString() +
-    //   'px; margin-top: ' + trial.ref_right_y_offset.toString() + 'px; margin-left: -100px;">'
-
-    // // debugger
-    // var html_to_append = ref_left_img_el_html + query_img_el_html + ref_right_img_el_html
-    // wrapper_arena.innerHTML += html_to_append
-
     display_element.appendChild(top_flex_el)
     display_element.appendChild(wrapper_arena)
     // debugger
@@ -250,7 +233,7 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
 
     // function to end trial when it is time
     var end_trial = function () {
-
+      // console.log('end_trial called')
       // kill any remaining setTimeout handlers
       jsPsych.pluginAPI.clearAllTimeouts();
 
@@ -275,7 +258,7 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
 
     // function to handle responses by the subject
     var after_response = function (info) {
-
+      // console.log('response registered')
       // only record the first response
       if (response.key == null) {
         response = info;
@@ -287,14 +270,21 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
           // kill any remaining setTimeout handlers
           // Otherwise, sometimes you respond but it doesn't register in time, and "missed" shows up 
           jsPsych.pluginAPI.clearAllTimeouts();
-
+          console.log('after_response: about to call bb')
           blank_board(info);
         }
       }
     };
 
     var blank_board = function (info) {
-      debugger
+      // console.log('bb called')
+
+      // kill keyboard listeners
+      if (typeof keyboardListener !== 'undefined') {
+        jsPsych.pluginAPI.cancelKeyboardResponse(keyboardListener);
+      }
+
+      // debugger
       // Make everything disappear
       document.querySelector('#jspsych-image-keyboard-response-stimulus').remove()
 
@@ -315,8 +305,10 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
     if (trial.stim_min_duration !== null) {
       jsPsych.pluginAPI.setTimeout(function () {
         min_duration_over = true
-
+        // console.log('stim_min_duration passed!')
+        
         if (response.key !== null) {
+          // console.log('stim_min_duration: about to call bb')
           blank_board(response);
         }
 
@@ -340,7 +332,7 @@ jsPsych.plugins["triplets-canvas-keyboard-response"] = (function () {
         let info = {
           rt: null
         }
-
+        // console.log('trial_duration: about to call bb')
         blank_board(info);
       }, trial.trial_duration);
     } else if (trial.response_ends_trial === false) {

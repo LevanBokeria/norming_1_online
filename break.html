@@ -7,6 +7,7 @@
 	<title>Break</title>
 	<script src="jspsych-6.3.1/jspsych.js"></script>
 	<script src='./jspsych-6.3.1/plugins/jspsych-instructions.js'></script>
+	<script src='./jspsych-6.3.1/plugins/jspsych-survey-text.js'></script>
 	<script src='./jspsych-6.3.1/plugins/jspsych-html-slider-response.js'></script>
 	<script src="jatos.js"></script>
 	<link rel="stylesheet" href="jspsych-6.3.1/css/jspsych.css" type="text/css">
@@ -22,7 +23,7 @@
 		jatos.onLoad(function () {
 
 			const calc_perf = function (data) {
-
+				debugger
 				let perc_corr
 
 				// Get trials that had a correct response
@@ -46,7 +47,7 @@
 
 			let instructions_text = []
 			let instruction_pages = []
-			debugger
+
 			if (jatos.studySessionData.latestFinishedComponentPos == jatos.studySessionData.inputData.component_positions.triplet_task) {
 
 				// Check if its after the practice trials
@@ -55,7 +56,10 @@
 					// Calculate performance
 					let perc_corr = calc_perf(jatos.studySessionData.outputData.practice)
 
-					instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> Those were practice trials. Now you will do the real trials! <br><br> You will do a total of ' + jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions + ' sessions, each with ' + jatos.studySessionData.inputData.triplet_sessions[0].length + ' trials.'
+					instructions_text = 'Thanks! You were accurate on ' + Math.floor(perc_corr) + '% of the trials! <br> Those were practice trials. Now you will do the real trials!' +
+					' <br><br> You will do a total of ' + jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions + 
+					' sessions, each with ' + jatos.studySessionData.inputData.triplet_sessions[0].length + ' trials.' + 
+					'<br>You will have breaks between the sessions, and the whole task will last about 30 minutes.'
 
 					instruction_pages = [
 						'<div class= "header">' +
@@ -90,7 +94,7 @@
 							'</div>',
 						]
 
-						comp_to_start = jatos.studySessionData.inputData.component_positions.debriefing  
+						comp_to_start = jatos.studySessionData.inputData.component_positions.debriefing
 
 					} else {
 
@@ -115,7 +119,7 @@
 
 					}
 
-				} 
+				}
 
 			}
 
@@ -126,7 +130,17 @@
 				button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
 			};
 
-			timeline.push(instructions);
+			var instructions_question = {
+				type: 'survey-text',
+				questions: [
+					{ prompt: 'Did you encounter any technical difficulties, such as cut off text or images, slow loading of images, or anything else?', rows: 6, columns: 50, required: false }
+				],
+				preamble: instruction_pages[0],
+				button_label_next: '<span style="color: black"d;> <strong> Next </stong></span>',
+				data: { test_part: 'break' }
+			}
+
+			timeline.push(instructions_question);
 
 			jsPsych.init({
 
@@ -135,7 +149,7 @@
 				on_finish: function (data) {
 
 					// Save this data
-					debugger
+					// debugger
 					jatos.studySessionData.outputData.breaks.push(jsPsych.data.get().values())
 
 					// Make JATOS remember that this session was run
