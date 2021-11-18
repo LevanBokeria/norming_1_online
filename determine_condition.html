@@ -121,12 +121,11 @@
 
             jatos.studySessionData.inputData.experiment_parameters = {
                 n_exemplars: 10,
-                exemplar_start_level: 14,
                 n_practice_sessions: 1,
-                n_triplet_sessions: 2,
+                n_triplet_sessions: 6,
                 triplet_trial_dur: 500,
                 triplet_trial_iti: 10,
-                triplet_stim_min_duration: 0, // minimum milliseconds to display objectss
+                triplet_stim_min_duration: 100, // minimum milliseconds to display objectss
             }
 
             let n_debug_trials = jatos.componentJsonInput.n_debug_trials
@@ -136,11 +135,11 @@
                 jatos.studySessionData.inputData.triplet_sessions.length - jatos.studySessionData.inputData.experiment_parameters.n_triplet_sessions)
 
             // Shorten the trials
-            let temp_practice = []
-            jatos.studySessionData.inputData.practice_sessions.forEach(function (el) {
-                temp_practice.push(el.slice(0, n_debug_trials))
-            })
-            jatos.studySessionData.inputData.practice_sessions = temp_practice
+            // let temp_practice = []
+            // jatos.studySessionData.inputData.practice_sessions.forEach(function (el) {
+            //     temp_practice.push(el.slice(0, n_debug_trials))
+            // })
+            // jatos.studySessionData.inputData.practice_sessions = temp_practice
 
             let temp_triplet_task = []
             jatos.studySessionData.inputData.triplet_sessions.forEach(function (el) {
