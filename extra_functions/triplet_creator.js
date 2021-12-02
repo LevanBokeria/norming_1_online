@@ -1,5 +1,4 @@
-function triplet_creator(n_exemplars,) {
-    // debugger
+function triplet_creator(n_exemplars) {
 
     let all_refs = []
     let all_queries = []

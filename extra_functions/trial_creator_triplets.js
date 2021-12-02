@@ -1,5 +1,5 @@
 function trial_creator_triplets(all_queries, all_refs, all_images, n_sessions) {
-    // debugger
+    
     let all_trials = []
 
     // Extract the dimension values from all_images array
@@ -45,10 +45,18 @@ function trial_creator_triplets(all_queries, all_refs, all_images, n_sessions) {
 
     let n_trials_per_session = all_trials.length / n_sessions
 
+    if (!Number.isInteger(n_trials_per_session)){
+        console.log(`Number of trials per sessions is ${n_trials_per_session}. Its not an integer value!`)
+
+        n_trials_per_session = Math.ceil(n_trials_per_session)
+
+        console.log(`Rounding it up... Now its ${n_trials_per_session}`)
+    }
+
     while (all_trials.length) {
         all_sessions[all_sessions.length] = all_trials.splice(0, n_trials_per_session)
     }
-
+    
     return all_sessions
 
 }
